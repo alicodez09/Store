@@ -1,8 +1,8 @@
 import { comparePassword, hashPassword } from "../helpers/authHelper.js";
 import userModel from "../models/userModel.js";
 import Jwt from "jsonwebtoken";
-//! Register Controller
 
+//! Register Controller
 const registerController = async (req, res) => {
   try {
     const { name, email, password, phone, address } = req.body;
@@ -61,6 +61,7 @@ const registerController = async (req, res) => {
     });
   }
 };
+//! Login Controller
 const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -87,7 +88,7 @@ const loginController = async (req, res) => {
         message: "Invalid Password",
       });
     }
-    // !Creating a token(token provides users with access to protected pages and resources for a limited period of time without having to re-enter their username and password.)
+    //! Creating a token(token provides users with access to protected pages and resources for a limited period of time without having to re-enter their username and password.)
     const token = await Jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
@@ -103,7 +104,6 @@ const loginController = async (req, res) => {
       },
       token,
     });
-    console.log(token, "token");
     console.log(
       {
         success: true,
@@ -128,5 +128,19 @@ const loginController = async (req, res) => {
     });
   }
 };
-
-export { loginController, registerController };
+//! TEST CONTROLLER
+const testController = async (req, res) => {
+  console.log("protected route");
+  res.status(200).send({
+    success: true,
+    message: "protected route",
+  });
+};
+const adminController = async (req, res) => {
+  console.log("protected route");
+  res.status(200).send({
+    success: true,
+    message: "admin protected route",
+  });
+};
+export { loginController, registerController, testController, adminController };
