@@ -3,3 +3,8 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.active {
+  color: crimson !important;
+  font-weight: 800;
+}
