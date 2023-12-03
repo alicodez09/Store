@@ -8,3 +8,6 @@
   color: crimson !important;
   font-weight: 800;
 }
+.dropdown:hover .dropdown-menu {
+  color: none !important;
+}

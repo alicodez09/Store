@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
-const Register = () => {
+import React, { useState } from "react";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/auth";
+const ResetPassword = () => {
+  const [auth, setAuth] = useAuth();
   const [data, setData] = useState({
-    name: "",
     email: "",
-    password: "",
-    address: "",
-    phone: "",
+    newPassword: "",
     secret_word: "",
   });
   const navigate = useNavigate();
+  const location = useLocation();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({
@@ -22,25 +23,32 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(data, "data");
-    const payload = {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      phone: data.phone,
-      address: data.address,
-      secret_word: data.secret_word,
-    };
+
     try {
-      const res = await axios.post(`/api/v1/auth/register`, payload);
+      const payload = {
+        email: data.email,
+        secret_word: data.secret_word,
+        newPassword: data.newPassword,
+      };
+      const res = await axios.post(`/api/v1/auth/reset-password`, payload);
       if (res.data.success) {
-        alert("user registered successfully");
-        navigate("/login");
+        alert("password reset successfully");
+        // using of context to save data of user
+        setAuth({
+          ...auth,
+          user: res.data.data,
+          token: res.data.token,
+        });
+        // store data in local storage
+        localStorage.setItem("auth", JSON.stringify(res.data));
+        navigate(location.state || "/");
       }
-      console.log(res.data, "new user");
+      console.log(res.data, "user");
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div className="container-fluid vh-100 d-flex align-items-center justify-content-center bg-dark ">
       <button
@@ -53,19 +61,8 @@ const Register = () => {
         </NavLink>
       </button>
       <div className="card text-white bg-light" style={{ padding: "2rem" }}>
-        <h3 className="mb-5 text-dark">Register</h3>
+        <h3 className="mb-5 text-dark">Reset Password </h3>
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <input
-              name="name"
-              value={data.name}
-              type="text"
-              className="form-control w-100"
-              placeholder="Enter Your Name"
-              onChange={handleChange}
-              required
-            />
-          </div>
           <div className="mb-3">
             <input
               name="email"
@@ -79,31 +76,9 @@ const Register = () => {
           </div>
           <div className="mb-3">
             <input
-              name="password"
-              value={data.password}
-              type="password"
-              className="form-control"
-              placeholder="Enter Your Password"
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              name="phone"
-              value={data.phone}
-              type="tel"
-              className="form-control"
-              placeholder="Enter Your Phone"
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <input
               name="secret_word"
-              type="text"
               value={data.secret_word}
+              type="text"
               className="form-control"
               placeholder="Enter Your Secret Word"
               onChange={handleChange}
@@ -112,15 +87,16 @@ const Register = () => {
           </div>
           <div className="mb-3">
             <input
-              name="address"
-              value={data.address}
-              type="text"
+              name="newPassword"
+              value={data.newPassword}
+              type="password"
               className="form-control"
-              placeholder="Enter Your Address"
+              placeholder="Enter Your New Password"
               onChange={handleChange}
               required
             />
           </div>
+
           <button type="submit" className="btn btn-dark mt-3 w-100">
             Submit
           </button>
@@ -130,4 +106,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default ResetPassword;

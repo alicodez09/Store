@@ -1,8 +1,18 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Logo from "../../assets/favicon.png";
-
+import { useAuth } from "../../context/auth";
 const Header = () => {
+  const [auth, setAuth] = useAuth();
+  const handleLogout = () => {
+    setAuth({
+      ...auth,
+      user: null,
+      token: "",
+    });
+    localStorage.removeItem("auth");
+    alert("Logout Successfully");
+  };
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-dark">
@@ -19,11 +29,7 @@ const Header = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <NavLink
-              to="/"
-              className="navbar-brand nav-link text-light"
-              href="#"
-            >
+            <NavLink to="/" className="navbar-brand nav-link text-light">
               <img src={Logo} width="34px" height="34px" alt="logo" />
             </NavLink>
 
@@ -33,47 +39,69 @@ const Header = () => {
                   to="/"
                   className="nav-link text-light"
                   aria-current="page"
-                  href="#"
                 >
                   Home
                 </NavLink>
               </li>
 
               <li className="nav-item">
-                <NavLink to="/about" className="nav-link text-light" href="#">
-                  About
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  to="/category"
-                  className="nav-link text-light"
-                  href="#"
-                >
+                <NavLink to="/category" className="nav-link text-light">
                   Category
                 </NavLink>
               </li>
+
+              {!auth.user ? (
+                <>
+                  <li className="nav-item">
+                    <NavLink to="/register" className="nav-link text-light">
+                      Register
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink to="/login" className="nav-link text-light">
+                      Login
+                    </NavLink>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="nav-item dropdown text-light">
+                    <Link
+                      className="nav-link dropdown-toggle text-light"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      {auth?.user?.name}
+                    </Link>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <NavLink
+                          className="dropdown-item"
+                          to={`/dashboard/${
+                            auth?.user?.role === 1 ? "admin" : "user"
+                          }`}
+                        >
+                          Dashboard
+                        </NavLink>
+                      </li>
+                      <li>
+                        <hr class="dropdown-divider" />
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to="/"
+                          onClick={handleLogout}
+                          className="dropdown-item"
+                        >
+                          Logout
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
+                </>
+              )}
               <li className="nav-item">
-                <NavLink to="/contact" className="nav-link text-light" href="#">
-                  Contact
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  to="/register"
-                  className="nav-link text-light"
-                  href="#"
-                >
-                  Register
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/login" className="nav-link text-light" href="#">
-                  Login
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/cart" className="nav-link text-light" href="#">
+                <NavLink to="/cart" className="nav-link text-light">
                   Cart(0)
                 </NavLink>
               </li>

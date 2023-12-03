@@ -1,13 +1,15 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/auth";
 const Login = () => {
+  const [auth, setAuth] = useAuth();
   const [data, setData] = useState({
     email: "",
     password: "",
   });
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,15 +22,24 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(data, "data");
-    const payload = {
-      email: data.email,
-      password: data.password,
-    };
+
     try {
+      const payload = {
+        email: data.email,
+        password: data.password,
+      };
       const res = await axios.post(`/api/v1/auth/login`, payload);
       if (res.data.success) {
         alert("user login successfully");
-        navigate("/");
+        // using of context to save data of user
+        setAuth({
+          ...auth,
+          user: res.data.data,
+          token: res.data.token,
+        });
+        // store data in local storage
+        localStorage.setItem("auth", JSON.stringify(res.data));
+        navigate(location.state || "/");
       }
       console.log(res.data, "user");
     } catch (error) {
@@ -48,7 +59,7 @@ const Login = () => {
         </NavLink>
       </button>
       <div className="card text-white bg-light" style={{ padding: "2rem" }}>
-        <h3 className="mb-5 text-dark">Login Form</h3>
+        <h3 className="mb-5 text-dark">Login </h3>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <input
@@ -76,6 +87,9 @@ const Login = () => {
           <button type="submit" className="btn btn-dark mt-3 w-100">
             Submit
           </button>
+          <NavLink to="/reset-password" className="nav-link text-dark mt-3">
+            Reset Password
+          </NavLink>
         </form>
       </div>
     </div>
