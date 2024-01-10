@@ -1,9 +1,7 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import AdminMenu from "../../components/Layout/AdminMenu";
-import { useAuth } from "../../context/auth";
-const Dashboard = () => {
-  const [auth, setAuth] = useAuth();
+
+const CreateProduct = () => {
   return (
     <>
       <div className="container-fluid vh-100  bg-light">
@@ -12,9 +10,8 @@ const Dashboard = () => {
             <AdminMenu />
           </div>
           <div className="col-8 mt-5">
-            <h3 className="text-center">Content</h3>
+            <h3 className="text-center">Create a Product</h3>
             <div className="card w-75 p-5 m-auto">
-              <h6> Hello {auth?.user?.name}!</h6>
               <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 Reiciendis, suscipit ratione nulla quo ullam autem pariatur
@@ -29,4 +26,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default CreateProduct;

@@ -9,20 +9,25 @@ const AdminRoute = () => {
 
   useEffect(() => {
     const authCheck = async () => {
-      const result = await axios.get("/api/v1/auth/admin-auth", {
-        headers: {
-          Authorization: auth?.token,
-        },
-      });
-      if (result.data.ok) {
-        setOk(true);
-      } else {
-        setOk(false);
+      if (auth?.token) {
+        try {
+          const result = await axios.get("/api/v1/auth/admin-auth", {
+            headers: {
+              Authorization: auth?.token,
+            },
+          });
+          if (result.data.ok) {
+            setOk(true);
+          } else {
+            setOk(false);
+          }
+        } catch (error) {
+          console.error("Error during authentication check:", error);
+        }
       }
     };
-    if (auth?.token) {
-      authCheck();
-    }
+
+    authCheck();
   }, [auth?.token]);
 
   return ok ? <Outlet /> : <Spinner path="" />;

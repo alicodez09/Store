@@ -1,18 +1,18 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import AdminMenu from "../../components/Layout/AdminMenu";
 import { useAuth } from "../../context/auth";
-const Dashboard = () => {
+import UserMenu from "../../components/Layout/UserMenu";
+const Orders = () => {
   const [auth, setAuth] = useAuth();
   return (
     <>
       <div className="container-fluid vh-100  bg-light">
         <div className="row">
           <div className="col-4">
-            <AdminMenu />
+            <UserMenu />
           </div>
           <div className="col-8 mt-5">
-            <h3 className="text-center">Content</h3>
+            <h3 className="text-center">Orders</h3>
             <div className="card w-75 p-5 m-auto">
               <h6> Hello {auth?.user?.name}!</h6>
               <p>
@@ -29,4 +29,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Orders;

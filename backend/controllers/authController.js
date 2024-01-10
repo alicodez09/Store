@@ -5,7 +5,7 @@ import Jwt from "jsonwebtoken";
 //! Register Controller
 const registerController = async (req, res) => {
   try {
-    const { name, email, password, phone, address, secret_word } = req.body;
+    const { name, email, password, secret_word } = req.body;
     // validations
     if (!name) {
       res.send({ message: "Name is required" });
@@ -16,12 +16,7 @@ const registerController = async (req, res) => {
     if (!password) {
       res.send({ message: "Password is required" });
     }
-    if (!phone) {
-      res.send({ message: "Phone No is required" });
-    }
-    if (!address) {
-      res.send({ message: "Home Address is required" });
-    }
+
     if (!secret_word) {
       res.send({ message: "Secret word is required" });
     }
@@ -41,8 +36,7 @@ const registerController = async (req, res) => {
     const user = await new userModel({
       name,
       email,
-      address,
-      phone,
+
       secret_word,
       password: hashedPassword,
     }).save();
@@ -102,8 +96,7 @@ const loginController = async (req, res) => {
       data: {
         name: user.name,
         email: user.email,
-        phone: user.phone,
-        address: user.address,
+
         secret_word: user.secret_word,
         role: user.role,
       },
@@ -116,8 +109,7 @@ const loginController = async (req, res) => {
         data: {
           name: user.name,
           email: user.email,
-          phone: user.phone,
-          address: user.address,
+
           role: user.role,
         },
         token,

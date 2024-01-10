@@ -6,8 +6,7 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
-    address: "",
-    phone: "",
+
     secret_word: "",
   });
   const navigate = useNavigate();
@@ -26,8 +25,7 @@ const Register = () => {
       name: data.name,
       email: data.email,
       password: data.password,
-      phone: data.phone,
-      address: data.address,
+
       secret_word: data.secret_word,
     };
     try {
@@ -88,17 +86,7 @@ const Register = () => {
               required
             />
           </div>
-          <div className="mb-3">
-            <input
-              name="phone"
-              value={data.phone}
-              type="tel"
-              className="form-control"
-              placeholder="Enter Your Phone"
-              onChange={handleChange}
-              required
-            />
-          </div>
+
           <div className="mb-3">
             <input
               name="secret_word"
@@ -110,17 +98,7 @@ const Register = () => {
               required
             />
           </div>
-          <div className="mb-3">
-            <input
-              name="address"
-              value={data.address}
-              type="text"
-              className="form-control"
-              placeholder="Enter Your Address"
-              onChange={handleChange}
-              required
-            />
-          </div>
+
           <button type="submit" className="btn btn-dark mt-3 w-100">
             Submit
           </button>
