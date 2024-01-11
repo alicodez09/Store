@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 
-//Creating a database Schema
-
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -12,7 +10,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true, //unique means with one email id only one user can login
+      unique: true,
     },
     password: {
       type: String,

@@ -4,6 +4,8 @@ import cors from "cors";
 import morgan from "morgan";
 import connectDb from "./config/db.js";
 import authRoute from "./routes/authRoute.js";
+import categoryRoute from "./routes/categoryRoute.js";
+import productRoute from "./routes/productRoute.js";
 
 const app = express();
 
@@ -20,6 +22,9 @@ connectDb();
 
 // !Routes
 app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/category", categoryRoute);
+app.use("/api/v1/product", productRoute);
+
 const PORT = process.env.PORT || 8081;
 
 app.listen(PORT, () => {
