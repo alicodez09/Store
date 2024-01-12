@@ -1,36 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useAuth } from "../../context/auth";
+import { useState, useEffect } from "react";
+import { useAuth } from "../../context/authContext";
 import { Outlet } from "react-router-dom";
 import axios from "axios";
-import Spinner from "../Layout/Spinner";
-const AdminRoute = () => {
+import Spinner from "../Spinner";
+//TODO=> An <Outlet> should be used in parent route elements to render their child route elements.
+export default function AdminRoute() {
   const [ok, setOk] = useState(false);
-  const [auth] = useAuth();
+
+  const [auth, setAuth] = useAuth();
 
   useEffect(() => {
     const authCheck = async () => {
-      if (auth?.token) {
-        try {
-          const result = await axios.get("/api/v1/auth/admin-auth", {
-            headers: {
-              Authorization: auth?.token,
-            },
-          });
-          if (result.data.ok) {
-            setOk(true);
-          } else {
-            setOk(false);
-          }
-        } catch (error) {
-          console.error("Error during authentication check:", error);
-        }
+      const res = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/auth/admin-auth`
+      );
+      if (res.data.ok) {
+        setOk(true);
+      } else {
+        setOk(false);
       }
     };
-
-    authCheck();
+    if (auth?.token) {
+      authCheck();
+    }
   }, [auth?.token]);
-
-  return ok ? <Outlet /> : <Spinner path="" />;
-};
-
-export default AdminRoute;
+  return ok ? <Outlet /> : <Spinner path=""/>;
+}

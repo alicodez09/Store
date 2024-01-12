@@ -1,9 +1,10 @@
+//! We will make here two function the first function will hashed and the second one will for compare to bcrypt
+
 import bcrypt from "bcrypt";
 
-const hashPassword = async (password) => {
+export const hashPassword = async (password) => {
   try {
-    //A saltRounds is a random value use for bcrypt that is generated and combined with the password before hashing.
-    const saltRounds = 10;
+    const saltRounds = 10
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     return hashedPassword;
   } catch (error) {
@@ -11,8 +12,6 @@ const hashPassword = async (password) => {
   }
 };
 
-const comparePassword = async (password, hashedPassword) => {
+export const comparePassword = async (password, hashedPassword) => {
   return bcrypt.compare(password, hashedPassword);
 };
-
-export { hashPassword, comparePassword };

@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@200&family=Mulish&family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Register and login Page Styling */
+.register,
+.login {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #3c6e71;
+  align-items: center;
+  justify-content: center;
+}
+.login .card {
+  padding: 7rem 2rem !important;
+}

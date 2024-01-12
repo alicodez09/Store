@@ -3,7 +3,8 @@ import userModel from "../models/userModel.js";
 import Jwt from "jsonwebtoken";
 
 //! Register Controller
-const registerController = async (req, res) => {
+
+export const registerController = async (req, res) => {
   try {
     const { name, email, password, secret_word } = req.body;
     // validations
@@ -18,16 +19,15 @@ const registerController = async (req, res) => {
     }
 
     if (!secret_word) {
-      res.send({ message: "Secret word is required" });
+      res.send({ message: "secret_word is required" });
     }
-
     // Checking the users
     const existingUser = await userModel.findOne({ email });
     // Existing Users
     if (existingUser) {
       return res.status(200).send({
         success: false,
-        message: "User already registered please login",
+        message: "User Already registered please login",
       });
     }
     // Register User
@@ -37,18 +37,13 @@ const registerController = async (req, res) => {
       name,
       email,
 
-      secret_word,
       password: hashedPassword,
+      secret_word,
     }).save();
-    console.log({
+    res.status(201).send({
       success: true,
       message: "User registered Successfully",
-      data: user,
-    });
-    res.status(200).send({
-      success: true,
-      message: "User registered Successfully",
-      data: user,
+      user,
     });
   } catch (error) {
     console.log(error);
@@ -59,8 +54,9 @@ const registerController = async (req, res) => {
     });
   }
 };
+
 //! Login Controller
-const loginController = async (req, res) => {
+export const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
     // validations
@@ -86,36 +82,21 @@ const loginController = async (req, res) => {
         message: "Invalid Password",
       });
     }
-    //! Creating a token(token provides users with access to protected pages and resources for a limited period of time without having to re-enter their username and password.)
+    // !Creating a token(token provides users with access to protected pages and resources for a limited period of time without having to re-enter their username and password.)
     const token = await Jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
     res.status(200).send({
       success: true,
       message: "Login Successfully",
-      data: {
+      user: {
         name: user.name,
         email: user.email,
 
-        secret_word: user.secret_word,
         role: user.role,
       },
       token,
     });
-    console.log(
-      {
-        success: true,
-        message: "Login Successfully",
-        data: {
-          name: user.name,
-          email: user.email,
-
-          role: user.role,
-        },
-        token,
-      },
-      "user_data"
-    );
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -125,40 +106,34 @@ const loginController = async (req, res) => {
     });
   }
 };
-
-const forgotPasswordController = async (req, res) => {
+// Forgot Password Controller
+export const forgotPasswordController = async (req, res) => {
   try {
-    const { email, newPassword, secret_word } = req.body;
+    const { email, secret_word, newPassword } = req.body;
+    // validations
     if (!email) {
       res.status(400).send({ message: "Email is required" });
     }
     if (!secret_word) {
-      res.status(400).send({ message: "Secret word is required" });
+      res.status(400).send({ message: "secret_word is required" });
     }
     if (!newPassword) {
       res.status(400).send({ message: "New Password is required" });
     }
-    // checking by email and secret word
+    // checking the user
     const user = await userModel.findOne({ email, secret_word });
-    // validations
-
+    // validation
     if (!user) {
       return res.status(404).send({
         success: false,
-        message: "wrong email or secret_word",
+        message: "Incorrect Email or Answer",
       });
     }
-
     const hashed = await hashPassword(newPassword);
-
-    const result = await userModel.findByIdAndUpdate(user._id, {
-      password: hashed,
-    });
-    console.log(result);
+    await userModel.findByIdAndUpdate(user._id, { password: hashed });
     res.status(200).send({
       success: true,
-      message: "Password Reset successfully",
-      data: result,
+      message: "Password reset Successfully",
     });
   } catch (error) {
     console.log(error);
@@ -169,25 +144,7 @@ const forgotPasswordController = async (req, res) => {
     });
   }
 };
-//! TEST CONTROLLER
-const testController = async (req, res) => {
-  console.log("protected route");
-  res.status(200).send({
-    success: true,
-    message: "protected route",
-  });
-};
-const adminController = async (req, res) => {
-  console.log("protected route");
-  res.status(200).send({
-    success: true,
-    message: "admin protected route",
-  });
-};
-export {
-  loginController,
-  registerController,
-  forgotPasswordController,
-  testController,
-  adminController,
+// Test Controller
+export const testController = (req, res) => {
+  res.send("protected route");
 };

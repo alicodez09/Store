@@ -1,9 +1,13 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import Logo from "../../assets/favicon.png";
-import { useAuth } from "../../context/auth";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import { GiShoppingBag } from "react-icons/gi";
+import { useAuth } from "../../context/authContext";
+import { toast } from "react-toastify";
+
 const Header = () => {
   const [auth, setAuth] = useAuth();
+  //  Logout function
   const handleLogout = () => {
     setAuth({
       ...auth,
@@ -11,7 +15,7 @@ const Header = () => {
       token: "",
     });
     localStorage.removeItem("auth");
-    alert("Logout Successfully");
+    toast.success("Logout Successfully");
   };
   return (
     <>
@@ -30,7 +34,12 @@ const Header = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
             <NavLink to="/" className="navbar-brand nav-link text-light">
-              <img src={Logo} width="34px" height="34px" alt="logo" />
+              <img
+                src="https://logowik.com/content/uploads/images/shop-app6999.jpg"
+                width="34px"
+                height="34px"
+                alt="logo"
+              />
             </NavLink>
 
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">

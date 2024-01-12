@@ -1,7 +1,7 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+
 import AdminMenu from "../../components/Layout/AdminMenu";
-import { useAuth } from "../../context/auth";
+import { useAuth } from "../../context/authContext";
 const Dashboard = () => {
   const [auth, setAuth] = useAuth();
   return (

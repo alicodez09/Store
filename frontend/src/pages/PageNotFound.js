@@ -1,21 +1,15 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-
+import React from 'react'
+import { Link } from 'react-router-dom'
 const PageNotFound = () => {
   return (
-    <div className="container-fluid bg-danger d-flex align-items-center justify-content-center vh-100">
-      <div className="text-center">
-        <h1 className="display-1 text-light">404</h1>
-        <p className="lead text-light">Oops! Page not found</p>
-        <p className="lead text-light">
-          The requested page could not be found.
-        </p>
-        <NavLink to="/" className="btn btn-dark btn-sm">
-          Back to Home
-        </NavLink>
-      </div>
+    <>
+    <div className="pnf">
+      <h1 className='pnf-title'>404!</h1>
+      <h2 className='pnf-heading'>OOPs.. Page Not Found</h2>
+      <Link to='/' className='pnf-btn mt-3'>Go Back</Link>
     </div>
-  );
-};
+    </>
+  )
+}
 
-export default PageNotFound;
+export default PageNotFound

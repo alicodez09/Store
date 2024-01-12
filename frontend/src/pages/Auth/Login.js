@@ -1,98 +1,113 @@
-import axios from "axios";
 import React, { useState } from "react";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../context/auth";
+import axios from "axios";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAuth } from "../../context/authContext";
+
 const Login = () => {
+  // States
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // Context
   const [auth, setAuth] = useAuth();
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
+  // useNavigate nd useLocation funtion
   const navigate = useNavigate();
   const location = useLocation();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
+  // Form Submit function
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(data, "data");
-
     try {
-      const payload = {
-        email: data.email,
-        password: data.password,
-      };
-      const res = await axios.post(`/api/v1/auth/login`, payload);
-      if (res.data.success) {
-        alert("user login successfully");
-        // using of context to save data of user
+      const res = await axios.post(
+        `${process.env.REACT_APP_API}/api/v1/auth/login`,
+        { email, password }
+      );
+      if (res && res.data.success) {
+        toast.success(res.data && res.data.message);
+        // using context
         setAuth({
           ...auth,
-          user: res.data.data,
+          user: res.data.user,
           token: res.data.token,
         });
-        // store data in local storage
+        // Storing data in local storage
         localStorage.setItem("auth", JSON.stringify(res.data));
         navigate(location.state || "/");
+      } else {
+        toast.error(res.data.message);
       }
-      console.log(res.data, "user");
     } catch (error) {
       console.log(error);
+      toast.error("Something wents wrong");
     }
   };
 
   return (
-    <div className="container-fluid vh-100 d-flex align-items-center justify-content-center bg-dark ">
-      <button
-        type="button"
-        className="btn btn-secondary"
-        style={{ position: "absolute", top: 0, left: 0, margin: "1rem" }}
-      >
-        <NavLink to="/" className="nav-link text-light">
-          Go Back
-        </NavLink>
-      </button>
-      <div className="card text-white bg-light" style={{ padding: "2rem" }}>
-        <h3 className="mb-5 text-dark">Login </h3>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <input
-              name="email"
-              value={data.email}
-              type="email"
-              className="form-control"
-              placeholder="Enter Your Email"
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              name="password"
-              value={data.password}
-              type="password"
-              className="form-control"
-              placeholder="Enter Your Password"
-              onChange={handleChange}
-              required
-            />
-          </div>
+    <>
+      <div className="login">
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <div
+                className="card p-5"
+                style={{ maxWidth: "34rem", margin: "auto" }}
+              >
+                <h1 className="text-center  mb-3">Login</h1>
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="form-control"
+                      placeholder="Enter Your Email"
+                      required
+                    />
+                  </div>
+                  <div className="mb-5">
+                    <input
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      type="password"
+                      className="form-control"
+                      placeholder="Enter Your Password"
+                      required
+                    />
+                  </div>
 
-          <button type="submit" className="btn btn-dark mt-3 w-100">
-            Submit
-          </button>
-          <NavLink to="/reset-password" className="nav-link text-dark mt-3">
-            Reset Password
-          </NavLink>
-        </form>
+                  <div
+                    className=" d-flex align-items-center"
+                    style={{ justifyContent: "space-between" }}
+                  >
+                    <button type="submit" className="btn btn-success  w-25">
+                      Login
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn btn-danger "
+                      onClick={() => {
+                        navigate("/forgot-password");
+                      }}
+                    >
+                      Forgot Password
+                    </button>
+                  </div>
+                </form>
+                <div className="mt-2">
+                  <p>
+                    Don't have an account?{" "}
+                    <span>
+                      <Link to="/register" style={{ textDecoration: "none" }}>
+                        Register Now
+                      </Link>
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

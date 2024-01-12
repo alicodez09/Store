@@ -1,26 +1,28 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { useAuth } from "../../context/auth";
 import UserMenu from "../../components/Layout/UserMenu";
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../context/authContext";
 const Dashboard = () => {
-  const [auth, setAuth] = useAuth();
+  const [auth] = useAuth();
   return (
     <>
-      <div className="container-fluid vh-100  bg-light">
-        <div className="row">
-          <div className="col-4">
+      <Link to="/">
+        <AiOutlineArrowLeft style={{ fontSize: "2rem" }} />
+      </Link>
+      <div className="container-fluid mt-5">
+        <div className="row m-3 p-3">
+          <div className="col-md-3">
             <UserMenu />
           </div>
-          <div className="col-8 mt-5">
-            <h3 className="text-center">Content</h3>
-            <div className="card w-75 p-5 m-auto">
-              <h6> Hello {auth?.user?.name}!</h6>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Reiciendis, suscipit ratione nulla quo ullam autem pariatur
-                saepe eveniet, molestias expedita quaerat perferendis itaque
-                quos a voluptatem eaque repudiandae dignissimos obcaecati!
-              </p>
+          <div className="col-md-9 text-center">
+            <h1 className="text-center">User Details</h1>
+            <div className="card p-3 ">
+            <h4 className=" fw-light text-capitalize " style={{textAlign:"start"}}>
+           Name:  <span className="text-uppercase text-danger fw-bolder">{auth?.user?.name}</span>
+            </h4>
+            <h4 className=" fw-light " style={{textAlign:"start"}}>Email: <span className="text-danger fw-bolder">{auth?.user?.email}</span></h4>
+            <h4 className=" fw-light " style={{textAlign:"start"}}>Address: <span className="text-danger fw-bolder">{auth?.user?.address}</span></h4>
             </div>
           </div>
         </div>
