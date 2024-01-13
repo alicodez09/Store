@@ -1,7 +1,6 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-
 import PageNotFound from "./pages/PageNotFound";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
@@ -21,25 +20,22 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-
         {/* User Private Routes */}
         <Route path="/dashboard" element={<PrivateRoute />}>
-          <Route path="user" element={<Dashboard />} />
+          <Route path="user-pannel" element={<Dashboard />} />
           <Route path="user/orders" element={<Orders />} />
           <Route path="user/profile" element={<Profile />} />
         </Route>
         {/* Admin Private Routes */}
         <Route path="/dashboard" element={<AdminRoute />}>
-          <Route path="admin" element={<AdminDashboard />} />
+          <Route path="admin-pannel" element={<AdminDashboard />} />
           <Route path="admin/create-category" element={<CreateCategory />} />
           <Route path="admin/create-product" element={<CreateProduct />} />
-
           <Route path="admin/users" element={<Users />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/login" element={<Login />} />
-
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>

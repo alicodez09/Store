@@ -1,15 +1,12 @@
 {
-  "name": "eccommern",
+  "name": "backend",
   "version": "1.0.0",
   "description": "ecommerce mern web application",
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix ./client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
-    
+    "start": "nodemon server.js",
+    "server": "node server.js"
   },
   "author": "ALi Abbas",
   "license": "MIT",

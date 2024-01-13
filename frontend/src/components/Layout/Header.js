@@ -87,7 +87,9 @@ const Header = () => {
                         <NavLink
                           className="dropdown-item"
                           to={`/dashboard/${
-                            auth?.user?.role === 1 ? "admin" : "user"
+                            auth?.user?.role === 1
+                              ? "admin-pannel"
+                              : "user-pannel"
                           }`}
                         >
                           Dashboard

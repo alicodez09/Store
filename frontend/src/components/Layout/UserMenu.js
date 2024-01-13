@@ -1,31 +1,37 @@
 import React from "react";
-import { NavLink,Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 const UserMenu = () => {
   return (
     <>
-      <div className="text-center">
-        <div className="list-group">
-          <h1>User Panel</h1>
+      <div className="mt-5">
+        <ul className="list-group">
+          <h2 className="text-center">User Pannel</h2>
+
           <Link
-            to="/dashboard/user"
-            className="list-group-item list-group-item-action"
+            to="/dashboard/user-pannel"
+            className="list-group-item  bg-dark text-white p-3"
+            activeClassName="custom-active"
           >
-           User 
+            User
           </Link>
-          <NavLink
-            to="/dashboard/user/profile"
-            className="list-group-item list-group-item-action"
-          >
-           User Profile
-          </NavLink>
-          <NavLink
+          <Link
             to="/dashboard/user/orders"
-            className="list-group-item list-group-item-action"
+            className="list-group-item bg-dark text-white p-3"
           >
-            User Orders
-          </NavLink>
-        
-        </div>
+            Orders
+          </Link>
+          <Link
+            to="/dashboard/user/profile"
+            className="list-group-item bg-dark text-white p-3"
+          >
+            Profile
+          </Link>
+
+          <Link to="/" className="list-group-item bg-dark text-white p-3">
+            Go Back
+          </Link>
+        </ul>
       </div>
     </>
   );
